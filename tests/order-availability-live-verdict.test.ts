@@ -14,6 +14,17 @@ function verdict(stock: number) {
 }
 
 describe("live availability verdict", () => {
+  it("treats a product without canonical variant rows as unavailable", () => {
+    const result = checkSelectionAvailability(
+      [{ id: "p0", name: "قميص", variants: [] }],
+      { product_name: "قميص" },
+    );
+
+    expect(result.status).toBe("product_sold_out");
+    expect(result.available).toBe(0);
+    expect(buildLiveAvailabilityBlock(result)).toContain("status: product_sold_out");
+  });
+
   it("changes deterministically whenever canonical stock changes in one conversation", () => {
     const soldOut = buildLiveAvailabilityBlock(verdict(0));
     const available = buildLiveAvailabilityBlock(verdict(4));
