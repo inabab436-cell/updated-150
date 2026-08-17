@@ -462,13 +462,8 @@ async function extractProfileFieldsWithAI(
 
 
 export function buildSystemPrompt(inventoryText?: string): string {
-  // SECURITY: the prompt is FIXED, operator-authored instruction, organised
-  // as ordered named sections in `src/lib/agent-prompt.ts`. Everything inside
-  // the <inventory> / <customer_data> delimiters is UNTRUSTED DATA (product
-  // names typed by merchants, chat text typed by end customers). Do not
-  // remove the delimiters or the untrusted-data section without a full
-  // security review; without them a hostile customer message can override
-  // the rules (prompt injection).
+  // Agent instructions were removed on request; only the live data block
+  // (<inventory> / <customer_data> delimiters) remains.
   return buildAgentPrompt(inventoryText);
 }
 
