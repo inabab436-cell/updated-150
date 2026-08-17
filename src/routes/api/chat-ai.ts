@@ -2710,7 +2710,7 @@ export const Route = createFileRoute("/api/chat-ai")({
                     createdOrderNumber: null,
                   };
                 }
-                if (deductionPlan.deductStock && String(latestConversationOrder?.payment_status ?? "confirmed") !== "pending") {
+                if (deductionPlan.deductStock) {
                   await refreshStockSnapshotAfterMutation();
                 }
                 break;
