@@ -1,10 +1,9 @@
 /**
  * Agent prompt module.
  *
- * All agent instructions (identity, voice, behaviour rules, persona, selling,
- * order/handoff/media/output/security guidance) have been removed on request.
- * Only the structural plumbing remains, so the rest of the code keeps working:
- * the section list is empty and the builder emits just the live data block.
+ * The active agent instructions are maintained as ordered sections below.
+ * The builder appends a pointer to the single live inventory snapshot so stock
+ * data is not duplicated in the model context.
  */
 
 export type AgentPromptSection = {
@@ -103,8 +102,8 @@ function renderSection(section: AgentPromptSection): string {
 }
 
 /**
- * Builds the prompt. With no sections defined, this returns only the live
- * inventory data block (or a pointer to the trailing snapshot).
+ * Builds the configured prompt followed by the live inventory data block (or
+ * a pointer to the trailing snapshot).
  */
 export function buildAgentPrompt(inventoryText?: string): string {
   const body = AGENT_PROMPT_SECTIONS.map(renderSection).join("\n\n");

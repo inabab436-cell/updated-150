@@ -209,12 +209,18 @@ export function checkSelectionAvailability(
   }
 
   const variants = product.variants ?? [];
-  // A product with no variant rows is not stock-tracked: it is orderable.
+  // Inventory rendering, media availability, and order creation all treat a
+  // product with no canonical variant rows as having zero stock. Keep this
+  // deterministic verdict aligned with those paths; returning `ok` here while
+  // <inventory> says `كمية: 0` gives the model two opposite answers and makes
+  // availability appear to flip between turns.
   if (!variants.length) {
     return {
       ...base,
-      status: "ok",
+      status: "product_sold_out",
       verified: ["product_name"],
+      available: 0,
+      message: `المنتج «${product.name}» غير متاح حالياً لعدم وجود مخزون مسجَّل له. قل ذلك للعميل الآن واعرض منتجاً آخر متاحاً.`,
     };
   }
 

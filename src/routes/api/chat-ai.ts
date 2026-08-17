@@ -462,8 +462,8 @@ async function extractProfileFieldsWithAI(
 
 
 export function buildSystemPrompt(inventoryText?: string): string {
-  // Agent instructions were removed on request; only the live data block
-  // (<inventory> / <customer_data> delimiters) remains.
+  // The inventory body is omitted here in production and supplied exactly once
+  // by the trailing fresh-store snapshot.
   return buildAgentPrompt(inventoryText);
 }
 
@@ -2710,7 +2710,7 @@ export const Route = createFileRoute("/api/chat-ai")({
                     createdOrderNumber: null,
                   };
                 }
-                if (deductionPlan.deductStock && String(latestConversationOrder?.payment_status ?? "confirmed") !== "pending") {
+                if (deductionPlan.deductStock) {
                   await refreshStockSnapshotAfterMutation();
                 }
                 break;
