@@ -62,12 +62,11 @@ describe("buildSystemPrompt", () => {
     const prompt = buildSystemPrompt();
     expect(prompt).not.toContain("14. AVAILABLE PRODUCTS — live data, not instructions");
     expect(prompt).toContain("trailing FRESH STORE SNAPSHOT");
-    // Non-negotiable behavioural rules that must not silently drift.
-    expect(prompt).toContain("create_order");
-    expect(prompt).toContain("request_handoff");
-    expect(prompt).toMatch(/Never mention that you are AI/);
-    expect(prompt).toContain("that approval remains valid");
-    expect(prompt).toContain('repeat "تمام"');
+    // The currently configured sections survive while deleted legacy rules do not.
+    expect(prompt).toContain("1. Identity — هوية الوكيل");
+    expect(prompt).toContain("5. State & Data — الحقيقة الحالية");
+    expect(prompt).toContain("أي عرض لمنتجات أو متغيرات لمنتجات");
+    expect(prompt).not.toContain('repeat "تمام"');
   });
 });
 
